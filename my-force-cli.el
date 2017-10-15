@@ -20,7 +20,6 @@
 				    (t run-cmd)
 				    ))
 
-
 (defun my-force-define-shell-command (func command outbuf)
   (lexical-let ((func func) (command command) (outbuf outbuf))
     (defalias func (lambda () (interactive) (my-force-run (async-shell-command command outbuf))))))
@@ -39,3 +38,9 @@
 (my-force-define-shell-command 'force-whoami "force whoami" my-force-cli-buffer)
 (my-force-define-shell-command-with-region 'force-apex "force apex" my-force-cli-buffer)
 (my-force-define-shell-command-with-region-param 'force-query "force query" my-force-cli-buffer)
+
+(defun my-force-push ()
+  (interactive)
+  (let ((files (dired-get-marked-files t current-prefix-arg)))
+    (dired-do-async-shell-command "force push -f *" nil files)))
+
